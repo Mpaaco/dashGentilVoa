@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — GentilVoa</title>
+    <meta name="description" content="Acesso ao Dashboard GentilVoa — Acompanhe informações, processos e atualizações.">
+    <link rel="icon" href="assets/img/logo.png" type="image/png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+
+    <!-- Canvas -->
+    <div class="login-canvas">
+
+        <!-- Camada 1: background.png (base) -->
+        <img src="assets/img/backgound.png" alt="" class="layer-bg">
+
+        <!-- Camada 2: Div glassmorphic com Background2 dentro -->
+        <div class="layer-glass">
+            <img src="assets/img/Background2.png" alt="" class="glass-bg2">
+        </div>
+
+        <!-- Camada 3: Retângulo glassmorphic com welcome + login card -->
+        <div class="layer-welcome">
+            <!-- Conteúdo de boas-vindas (lado esquerdo) -->
+            <div class="welcome-text">
+                <img src="assets/img/logo_login.png" alt="GentilVoa" class="welcome-logo">
+                <h1>Bem-vindo!</h1>
+                <div class="welcome-divider"></div>
+                <p>Aqui você acompanhará informações, processos e atualizações de forma simples, organizada e segura.</p>
+            </div>
+
+            <!-- Card de Login (lado direito, dentro do layer-welcome) -->
+            <div class="login-card">
+                <h2>Login</h2>
+
+                <form id="login-form" class="login-form" autocomplete="off">
+                    <div class="form-field">
+                        <label for="login-email">E-mail</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="login-email" name="email" placeholder="seu@email.com" required>
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="remember-row">
+                        <input type="checkbox" id="remember-me" checked>
+                        <label for="remember-me">Manter conectado</label>
+                    </div>
+
+                    <div id="login-feedback" class="login-feedback"></div>
+
+                    <button type="submit" class="btn-entrar" id="btn-entrar">
+                        <span class="btn-label">Entrar</span>
+                        <span class="btn-spinner"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Formas Decorativas Laranja -->
+        <div class="deco-top-right"></div>
+        <div class="deco-bottom-center"></div>
+        <div class="deco-bottom-right"></div>
+
+        <!-- Badge CO&SO -->
+        <img src="assets/img/co&so.png" alt="Sistema by CO&SO" class="coeso-badge">
+    </div>
+
+    <!-- Auth Script -->
+    <script src="assets/js/auth/auth.js"></script>
+    <script src="assets/js/auth/login-handler.js"></script>
+</body>
+</html>

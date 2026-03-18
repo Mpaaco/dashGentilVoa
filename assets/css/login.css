@@ -1,0 +1,587 @@
+/* ── Login Page Styles ── */
+/* Layout fiel ao Figma: canvas 1920×1440, 3 camadas sobrepostas */
+/* Variáveis compartilhadas com o dashboard */
+
+:root {
+    --primary-orange: #FF751F;
+    --primary-dark-orange: #CF631F;
+    --primary-light-orange: #fd8b45;
+    --text-dark: #333333;
+    --text-muted: #888888;
+    --white: #ffffff;
+    --bg-input: #f0f0f0;
+    --radius-pill: 50px;
+    --radius-sm: 8px;
+    --radius-card: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--white);
+    overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CANVAS — mantém a proporção do Figma (1920×1440)
+   e centraliza no viewport
+   ═══════════════════════════════════════════════════════════════════ */
+.login-canvas {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CAMADA 1 — background.png (base)
+   Figma: W 1406, H 1208, X 514, Y 232 (do canvas 1920×1440)
+   Proporções: left 26.8%, top 16.1%, width 73.2%, height 83.9%
+   ═══════════════════════════════════════════════════════════════════ */
+.layer-bg {
+    position: absolute;
+    left: 26.8%;
+    top: 16.1%;
+    width: 73.2%;
+    height: auto;
+    object-fit: contain;
+    object-position: top left;
+    z-index: 1;
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CAMADA 2 — Div glassmorphic com Background2 dentro
+   Figma: W 1678, H 976, X 128, Y 232
+   Proporções: left 6.7%, top 16.1%, width 87.4%, height 67.8%
+   Efeito: backdrop-blur(20px), borda 1px #ffffff80
+   ═══════════════════════════════════════════════════════════════════ */
+.layer-glass {
+    position: absolute;
+    left: 6.7%;
+    top: 16.1%;
+    width: 87.4%;
+    height: 67.8%;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.15);
+    z-index: 2;
+    overflow: hidden;
+}
+
+/* Background2.png dentro do layer-glass — opacidade reduzida para glassmorphism funcionar */
+.glass-bg2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CAMADA 3 — Retângulo glassmorphic com welcome + login card
+   Centralizado horizontalmente dentro do canvas
+   Efeito: backdrop-blur(20px), borda 1px #ffffff80
+   ═══════════════════════════════════════════════════════════════════ */
+.layer-welcome {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 76.3%;
+    height: 46%;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.45);
+    z-index: 3;
+    display: flex;
+    align-items: stretch;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ── Textos de boas-vindas (lado esquerdo do layer-welcome) ── */
+.welcome-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 60px;
+    position: relative;
+}
+
+/* Overlay para garantir legibilidade do texto */
+.welcome-text::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.85) 0%,
+        rgba(255, 255, 255, 0.55) 100%
+    );
+    border-radius: inherit;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.welcome-logo {
+    width: 44px;
+    height: auto;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: slideUp 0.5s ease-out 0.2s forwards;
+}
+
+.welcome-text h1 {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 14px;
+    line-height: 1;
+    opacity: 0;
+    animation: slideUp 0.5s ease-out 0.35s forwards;
+}
+
+.welcome-divider {
+    width: 55px;
+    height: 4px;
+    background-color: var(--primary-orange);
+    border-radius: 3px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: slideUp 0.5s ease-out 0.45s forwards;
+}
+
+.welcome-text p {
+    font-size: clamp(12px, 1.1vw, 16px);
+    font-weight: 500;
+    color: var(--text-dark);
+    line-height: 1.65;
+    max-width: 420px;
+    opacity: 0;
+    animation: slideUp 0.5s ease-out 0.55s forwards;
+}
+
+/* ── Card de Login (lado direito do layer-welcome) ── */
+.login-card {
+    width: 320px;
+    min-width: 280px;
+    background: var(--white);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    padding: 45px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    opacity: 0;
+    animation: slideLeft 0.6s ease-out 0.3s forwards;
+}
+
+.login-card h2 {
+    font-size: clamp(28px, 2.5vw, 40px);
+    font-weight: 800;
+    color: var(--primary-orange);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* ── Formulário ── */
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 18px;
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    pointer-events: none;
+    transition: color 0.25s ease;
+}
+
+.input-wrapper input:focus ~ .input-icon,
+.input-wrapper input:not(:placeholder-shown) ~ .input-icon {
+    color: var(--primary-orange);
+}
+
+.form-field input {
+    padding: 14px 20px 14px 46px;
+    border: 2px solid transparent;
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-input);
+    outline: none;
+    width: 100%;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.form-field input::placeholder {
+    color: #aaa;
+}
+
+.form-field input:focus {
+    border-color: var(--primary-orange);
+    background-color: var(--white);
+    box-shadow: 0 0 0 4px rgba(255, 117, 31, 0.1);
+}
+
+/* Validação visual */
+.form-field input.is-valid {
+    border-color: #27ae60;
+}
+
+.form-field input.is-invalid {
+    border-color: #e74c3c;
+}
+
+/* ── Checkbox "Manter Logado" ── */
+.remember-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.remember-row input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--primary-orange);
+    cursor: pointer;
+}
+
+.remember-row label {
+    font-size: 12px;
+    color: #999;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ── Botão Entrar ── */
+.btn-entrar {
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-orange);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-entrar:hover {
+    background-color: var(--primary-dark-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 117, 31, 0.35);
+}
+
+.btn-entrar:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-entrar:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Spinner dentro do botão */
+.btn-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+}
+
+.btn-entrar.is-loading .btn-spinner {
+    display: inline-block;
+}
+
+.btn-entrar.is-loading .btn-label {
+    display: none;
+}
+
+/* ── Feedback ── */
+.login-feedback {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    min-height: 18px;
+    transition: opacity 0.3s ease;
+}
+
+.login-feedback--error {
+    color: #e74c3c;
+    animation: shake 0.4s ease;
+}
+
+.login-feedback--success {
+    color: #27ae60;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FORMAS DECORATIVAS LARANJA
+   ═══════════════════════════════════════════════════════════════════ */
+.deco-top-right {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 280px;
+    height: 350px;
+    background-color: var(--primary-orange);
+    border-radius: 60px;
+    z-index: 0;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.1s forwards;
+}
+
+.deco-bottom-center {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-60%);
+    width: 220px;
+    height: 130px;
+    background-color: var(--primary-orange);
+    border-radius: 50% 50% 0 0;
+    z-index: 0;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.3s forwards;
+}
+
+.deco-bottom-right {
+    position: absolute;
+    bottom: -30px;
+    right: -10px;
+    width: 180px;
+    height: 180px;
+    background-color: var(--primary-orange);
+    border-radius: 40px;
+    transform: rotate(15deg);
+    z-index: 0;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.2s forwards;
+}
+
+/* ── Badge CO&SO ── */
+.coeso-badge {
+    position: absolute;
+    bottom: 16px;
+    right: 24px;
+    height: 28px;
+    opacity: 0;
+    z-index: 5;
+    transition: opacity 0.3s ease;
+    animation: fadeIn 0.6s ease-out 0.8s forwards;
+}
+
+.coeso-badge:hover {
+    opacity: 1 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMAÇÕES
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translate(-50%, -46%); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.8; }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVIDADE
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 900px) {
+    .layer-welcome {
+        flex-direction: column;
+        width: 92%;
+        height: auto;
+        min-height: 70vh;
+    }
+
+    .login-card {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .welcome-text {
+        padding: 30px;
+    }
+
+    .deco-top-right {
+        width: 160px;
+        height: 200px;
+    }
+
+    .deco-bottom-right {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    body {
+        overflow-y: auto;
+    }
+
+    .login-canvas {
+        min-height: 100vh;
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Esconde camadas decorativas complexas no mobile */
+    .layer-bg,
+    .layer-glass,
+    .deco-top-right,
+    .deco-bottom-center,
+    .deco-bottom-right {
+        display: none;
+    }
+
+    .login-canvas {
+        background: linear-gradient(160deg, #fff5ee 0%, #ffe8d6 50%, #ffd4b3 100%);
+    }
+
+    .layer-welcome {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+        border: none;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        animation: none;
+    }
+
+    .welcome-text {
+        padding: 40px 24px 20px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .welcome-text::before {
+        display: none;
+    }
+
+    .welcome-text p {
+        text-align: center;
+    }
+
+    .welcome-divider {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .login-card {
+        padding: 30px 24px;
+        box-shadow: none;
+        animation: none;
+        opacity: 1;
+    }
+
+    .welcome-logo,
+    .welcome-text h1,
+    .welcome-divider,
+    .welcome-text p {
+        animation: none;
+        opacity: 1;
+    }
+
+    .coeso-badge {
+        position: relative;
+        display: block;
+        margin: 20px auto;
+        bottom: auto;
+        right: auto;
+        animation: none;
+        opacity: 0.7;
+    }
+}
