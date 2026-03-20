@@ -4,7 +4,15 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  // 1. Busca contratos do Google Sheets
+  // 1. Busca o valor da meta da planilha (ou localStorage/padrão)
+  try {
+    await fetchMetaValor();
+    _atualizaDisplayMeta(META_VALOR);
+  } catch (err) {
+    console.warn('Usando meta padrão:', err);
+  }
+
+  // 2. Busca contratos do Google Sheets
   let contratos = [];
   try {
     contratos = await fetchContratos();
@@ -12,32 +20,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Erro ao carregar dados da planilha:', err);
   }
 
-  // 2. Popula os selects de filtro com opções dinâmicas
+  // 3. Popula os selects de filtro com opções dinâmicas
   populaSelects(contratos);
 
-  // 3. Inicializa os gráficos com dados reais
+  // 4. Inicializa os gráficos com dados reais
   initBarChart(contratos);
   initLineChart(contratos);
 
-  // 4. Inicializa os toggles e eventos dos selects
+  // 5. Inicializa os toggles e eventos dos selects
   initToggles(contratos);
 
-  // 5. Inicializa o download de Excel
+  // 6. Inicializa o download de Excel
   initDownload(contratos);
 
-  // 6. Atualiza o valor "Recebido até Hoje" e a barra de progresso
+  // 7. Atualiza o valor "Recebido até Hoje" e a barra de progresso
   _atualizaMetaEProgresso(contratos);
 
-  // 7. Popula a tabela de Histórico de Contratos
+  // 8. Popula a tabela de Histórico de Contratos
   populaTabela(contratos);
 
-  // 8. Inicializa Modal do Header (Histórico)
+  // 9. Inicializa Modal do Header (Histórico)
   initHistoryModal();
 
-  // 9. Inicializa Modal de Nova Proposta
+  // 10. Inicializa Modal de Nova Proposta
   initProposalModal();
 
-  // 10. Lógica da Tela de Loading (Mínimo de 15 segundos)
+  // 11. Inicializa Modal de Exclusão de Contratos
+  initDeleteModal();
+
+  // 12. Inicializa Modal de Edição de Meta
+  initMetaModal();
+
+  // 13. Lógica da Tela de Loading (Mínimo de 15 segundos)
   initLoadingScreen();
 });
 
